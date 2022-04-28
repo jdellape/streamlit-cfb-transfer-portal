@@ -37,16 +37,21 @@ filtered_data = list(filter(lambda d: d['origin'] == team or d['destination'] ==
 st.title("Team Transfer Data From API")
 
 team_departing_transfers = list(filter(lambda d:d['origin'] == team, filtered_data))
+departure_df = pd.DataFrame(team_departing_transfers)
+departure_df['season'] = departure_df['season'].astype('string') 
 team_arriving_transfers = list(filter(lambda d:d['destination'] == team, filtered_data))
-
+arrival_df = pd.DataFrame(team_arriving_transfers)
+arrival_df['season'] = arrival_df['season'].astype('string') 
 
 row1_space1, row1_1, row1_space2, row1_2, row1_space3 = st.columns((.1, 1, .1, 1, .1))
 
 with row1_1:
-	st.image('pics/departures.png')
-	st.metric("# Players", len(team_departing_transfers))
-	st.dataframe(pd.DataFrame(team_departing_transfers))
+    st.image('pics/departures.png')
+    st.metric("# Players", len(team_departing_transfers))
+    st.bar_chart(departure_df['season'].value_counts())
+    st.dataframe(departure_df)
 with row1_2:
-	st.image('pics/arrivals.png')
-	st.metric("# Players", len(team_arriving_transfers))
-	st.dataframe(pd.DataFrame(team_arriving_transfers))
+    st.image('pics/arrivals.png')
+    st.metric("# Players", len(team_arriving_transfers))
+    st.bar_chart(arrival_df['season'].value_counts())
+    st.dataframe(arrival_df)
