@@ -7,17 +7,23 @@ st.set_page_config(layout="wide")
 #Access the API. I'll need to hide this when deploying
 AUTH_HEADER =  st.secrets['API_AUTH_STRING']
 
+#Transfer portal years available from cfb data API
+YEARS = ['2021','2022','2023']
+
 #Function for making requests to cfb data api
 def get_cfb_data_response(url, auth_string):
     response = requests.get(url, headers={'Authorization': auth_string})
     return response.json()
 
+#Function to create single list from list of lists
+def flatten(l):
+    return [item for sublist in l for item in sublist]
+
 #Fetch data
 @st.cache
 def fetch_data():
-    data = get_cfb_data_response(f'https://api.collegefootballdata.com/player/portal?year=2021', AUTH_HEADER)
-    data = data + get_cfb_data_response(f'https://api.collegefootballdata.com/player/portal?year=2022', AUTH_HEADER)
-    return data
+    data = [get_cfb_data_response(f'https://api.collegefootballdata.com/player/portal?year={year}', AUTH_HEADER) for year in YEARS]
+    return flatten(data)
 
 data_from_api = fetch_data()
 
@@ -34,7 +40,7 @@ team = st.selectbox('Pick a Team', unique_teams)
 #Filter data from api according to user selection
 filtered_data = list(filter(lambda d: d['origin'] == team or d['destination'] == team, data_from_api))
 
-st.title("Team Transfer Data From API")
+st.title("Transfer Portal Activity by Year")
 
 team_departing_transfers = list(filter(lambda d:d['origin'] == team, filtered_data))
 departure_df = pd.DataFrame(team_departing_transfers)
