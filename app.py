@@ -55,9 +55,9 @@ with row1_1:
     st.image('pics/departures.png')
     st.metric("# Players", len(team_departing_transfers))
     st.bar_chart(departure_df['season'].value_counts())
-    st.dataframe(departure_df)
+    st.dataframe(departure_df.sort_values(by='transferDate', ascending=False))
 with row1_2:
     st.image('pics/arrivals.png')
     st.metric("# Players", len(team_arriving_transfers))
     st.bar_chart(arrival_df['season'].value_counts())
-    st.dataframe(arrival_df)
+    st.dataframe(arrival_df.sort_values(by='transferDate', ascending=False))
