@@ -8,7 +8,7 @@ st.set_page_config(layout="wide")
 AUTH_HEADER =  st.secrets['API_AUTH_STRING']
 
 #Transfer portal years available from cfb data API
-YEARS = ['2021','2022','2023']
+YEARS = ['2021','2022','2023', '2024']
 
 #Function for making requests to cfb data api
 def get_cfb_data_response(url, auth_string):
