@@ -20,7 +20,7 @@ def flatten(l):
     return [item for sublist in l for item in sublist]
 
 #Fetch data
-@st.cache
+@st.cache_data
 def fetch_data():
     data = [get_cfb_data_response(f'https://api.collegefootballdata.com/player/portal?year={year}', AUTH_HEADER) for year in YEARS]
     return flatten(data)
